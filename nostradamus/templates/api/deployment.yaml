@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Release.Name }}-api"
+  labels:
+    {{- include "nostradamus.labels" . | nindent 4 }}
+    nostradamus-platform: api
+spec:
+  selector:
+    matchLabels:
+      {{- include "nostradamus.selectorLabels" . | nindent 6 }}
+      nostradamus-platform: api
+  template:
+    metadata:
+      labels:
+        {{- include "nostradamus.labels" . | nindent 8 }}
+        nostradamus-platform: api
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: api
+              containerPort: {{ .Values.api.service.port }}
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: "{{ .Release.Name }}-api-cm"
+            - secretRef:
+                name: emqx-api-credentials
+  replicas: {{ .Values.replicaCount }}

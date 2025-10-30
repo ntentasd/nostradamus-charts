@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ include "nostradamus.fullname" . }}-api"
+  labels:
+    {{- include "nostradamus.labels" . | nindent 4 }}
+    nostradamus-platform: api
+spec:
+  type: {{ .Values.api.service.type }}
+  ports:
+    - name: api
+      port: {{ .Values.api.service.port }}
+      targetPort: {{ .Values.api.service.port }}
+      protocol: TCP
+  selector:
+    {{- include "nostradamus.selectorLabels" . | nindent 4 }}
+    nostradamus-platform: api
