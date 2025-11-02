@@ -34,6 +34,17 @@ cm:
   kafka_brokers: nostradamus-kafka-bootstrap.kafka:9092
   valkey_service: valkey-headless.valkey.svc.cluster.local
 
+metrics:
+  serviceMonitor:
+    # Enable a prometheus ServiceMonitor
+    enabled: false
+
+    # Prometheus ServiceMonitor interval
+    interval: 30s
+
+    # Prometheus ServiceMonitor selector
+    selector: {}
+
 resources:
   {}
   # limits:
