@@ -33,6 +33,7 @@ cm:
   emqx_url: emqx-dashboard.kafka:18083
   kafka_brokers: nostradamus-kafka-bootstrap.kafka:9092
   valkey_service: valkey-headless.valkey.svc.cluster.local
+  tempo_endpoint: tempo.monitoring:4317
 
 metrics:
   serviceMonitor:
@@ -45,8 +46,7 @@ metrics:
     # Prometheus ServiceMonitor selector
     selector: {}
 
-resources:
-  {}
+resources: {}
   # limits:
   #   cpu: 100m
   #   memory: 128Mi

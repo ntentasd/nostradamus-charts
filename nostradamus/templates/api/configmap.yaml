@@ -11,3 +11,4 @@ data:
   EMQX_URL: {{ .Values.cm.emqx_url | quote }}
   KAFKA_BROKERS: {{ .Values.cm.kafka_brokers | quote }}
   VALKEY_SERVICE: {{ join "," .Values.cm.valkey_service | quote }}
+  TEMPO_ENDPOINT: {{ .Values.cm.tempo_endpoint | quote }}
