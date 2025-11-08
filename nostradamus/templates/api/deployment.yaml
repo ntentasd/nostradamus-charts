@@ -38,7 +38,8 @@ spec:
               done
               echo "All dependencies are ready."
         - name: "{{ .Chart.Name }}-migrations"
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.api.image.repository | default "tents/nostradamus-api" }}:{{ .Values.api.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.api.image.pullPolicy | default "IfNotPresent" }}
           command:
             - "migrate"
           args:
@@ -47,8 +48,8 @@ spec:
             - "up"
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: "{{ .Values.api.image.repository | default "tents/nostradamus-api" }}:{{ .Values.api.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.api.image.pullPolicy | default "IfNotPresent" }}
           ports:
             - name: api
               containerPort: {{ .Values.api.service.port }}
@@ -58,4 +59,4 @@ spec:
                 name: "{{ .Release.Name }}-api-cm"
             - secretRef:
                 name: emqx-api-credentials
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.api.replicaCount  | default 1 }}

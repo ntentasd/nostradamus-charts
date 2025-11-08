@@ -6,9 +6,14 @@ metadata:
     {{- include "nostradamus.labels" . | nindent 4 }}
     nostradamus-platform: api
 data:
-  SCYLLA_NODES: {{ join "," .Values.scylla.nodes }}
   ARROYO_URL: {{ .Values.cm.arroyo_url | quote }}
   EMQX_URL: {{ .Values.cm.emqx_url | quote }}
   KAFKA_BROKERS: {{ .Values.cm.kafka_brokers | quote }}
-  VALKEY_SERVICE: {{ join "," .Values.cm.valkey_service | quote }}
+  SCYLLA_NODES: {{ join "," .Values.scylla.nodes }}
   TEMPO_ENDPOINT: {{ .Values.cm.tempo_endpoint | quote }}
+  {{- if eq (lower .Values.cache.driver) "valkey" }}
+  VALKEY_NODES: {{ join "," .Values.cache.valkey_nodes }}
+  {{- else if eq (lower .Values.cache.driver) "memcached" }}
+  MEMCACHED_NODE: {{ .Values.cache.memcached_node }}
+  {{- else }}
+  {{- end }}

@@ -1,30 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "{{ .Release.Name }}-frontend"
+  name: "{{ .Release.Name }}-ui"
   labels:
     {{- include "nostradamus.labels" . | nindent 4 }}
-    nostradamus-platform: frontend
+    nostradamus-platform: ui
 spec:
   selector:
     matchLabels:
       {{- include "nostradamus.selectorLabels" . | nindent 6 }}
-      nostradamus-platform: frontend
+      nostradamus-platform: ui
   template:
     metadata:
       labels:
         {{- include "nostradamus.labels" . | nindent 8 }}
-        nostradamus-platform: frontend
+        nostradamus-platform: ui
     spec:
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
+          image: "{{ .Values.ui.image.repository | default "tents/nostradamus-ui" }}:{{ .Values.ui.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.ui.image.pullPolicy | default "IfNotPresent" }}
           ports:
             - name: http
-              containerPort: {{ .Values.frontend.service.port }}
+              containerPort: {{ .Values.ui.service.port }}
               protocol: TCP
           env:
             - name: API_URL
               value: "http://{{- include "nostradamus.fullname" . }}-api:{{ .Values.api.service.port }}"
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.ui.replicaCount }}

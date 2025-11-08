@@ -1,26 +1,35 @@
-replicaCount: 1
-
-# This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
-image:
-  repository: tents/nostradamus-api
-  # This sets the pull policy for images.
-  pullPolicy: Always
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: latest
-
 api:
+  # This sets the number of api replicas
+  replicaCount: 1
+  image:
+    # This sets the repository for the api image.
+    repository: tents/nostradamus-api
+    # This sets the pull policy for the api image.
+    # pullPolicy: IfNotPresent
+    # Overrides the api image tag whose default is the chart appVersion.
+    # tag: latest
   service:
+    # This sets the api service type
     type: ClusterIP
+    # Configures the api port
     port: 8080
 
-frontend:
-  service:
-    type: LoadBalancer
-    port: 3000
+
+ui:
+  # This sets the number of ui replicas
+  replicaCount: 1
   image:
-    repository: tents/nostradamus-frontend
-    pullPolicy: Always
-    tag: latest
+    # This sets the repository for the ui image.
+    repository: tents/nostradamus-ui
+    # This sets the pull policy for the ui image.
+    # pullPolicy: IfNotPresent
+    # Overrides the ui image tag whose default is the chart appVersion.
+    # tag: latest
+  service:
+    # This sets the ui service type
+    type: ClusterIP
+    # Configures the ui port
+    port: 3000
 
 scylla:
   nodes:
@@ -28,21 +37,24 @@ scylla:
     - scylladb-nostradamus-main-nostradamus-1-1.scylla.svc.cluster.local:9042
     - scylladb-nostradamus-main-nostradamus-1-2.scylla.svc.cluster.local:9042
 
+cache:
+  # valkey or memcached
+  driver: valkey
+  valkey_nodes: valkey-headless.valkey:6379
+  memcached_node: memcached.memcached:11211
+
 cm:
   arroyo_url: arroyo.arroyo
   emqx_url: emqx-dashboard.kafka:18083
   kafka_brokers: nostradamus-kafka-bootstrap.kafka:9092
-  valkey_service: valkey-headless.valkey.svc.cluster.local
   tempo_endpoint: tempo.monitoring:4317
 
 metrics:
   serviceMonitor:
     # Enable a prometheus ServiceMonitor
     enabled: false
-
     # Prometheus ServiceMonitor interval
     interval: 30s
-
     # Prometheus ServiceMonitor selector
     selector: {}
 
