@@ -16,6 +16,35 @@ spec:
         {{- include "nostradamus.labels" . | nindent 8 }}
         nostradamus-platform: api
     spec:
+      initContainers:
+        - name: "wait-for-dependencies"
+          image: "busybox:latest"
+          args:
+            - sh
+            - -c
+            - |
+              for dep in \
+                "nostradamus-kafka-bootstrap.kafka:9092" \
+                "valkey-headless.valkey:6379" \
+                "scylladb-client.scylla:9042"; do
+                host=${dep%:*}
+                port=${dep#*:}
+                echo "Waiting for $host:$port..."
+                until nc -zv $host $port; do
+                  echo "Still waiting for $host:$port..."
+                  sleep 2
+                done
+                echo "$host:$port is up"
+              done
+              echo "All dependencies are ready."
+        - name: "{{ .Chart.Name }}-migrations"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          command:
+            - "migrate"
+          args:
+            - "-path=/opt/migrations"
+            - "-database=cassandra://scylladb-client.scylla:9042/sensors_meta"
+            - "up"
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
