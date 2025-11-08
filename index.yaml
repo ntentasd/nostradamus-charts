@@ -3,6 +3,16 @@ entries:
   nostradamus:
   - apiVersion: v2
     appVersion: 0.1.2
+    created: "2025-11-08T15:45:25.766766631Z"
+    description: A Helm chart for the Nostradamus platform
+    digest: 2c2d676b9d84ca4b55a22be990fbcc3463d74dbe1df3cf9d58f6bd8abfcf11a0
+    name: nostradamus
+    type: application
+    urls:
+    - https://github.com/ntentasd/nostradamus-charts/releases/download/nostradamus-0.1.8/nostradamus-0.1.8.tgz
+    version: 0.1.8
+  - apiVersion: v2
+    appVersion: 0.1.2
     created: "2025-11-08T14:50:51.8674532Z"
     description: A Helm chart for the Nostradamus platform
     digest: b9bc00037238da485347278c70aa35724034268c1fefdda8f3b713e196f74a7d
@@ -31,4 +41,4 @@ entries:
     urls:
     - https://github.com/ntentasd/nostradamus-charts/releases/download/nostradamus-0.1.5/nostradamus-0.1.5.tgz
     version: 0.1.5
-generated: "2025-11-08T14:50:51.86746971Z"
+generated: "2025-11-08T15:45:25.766783783Z"
