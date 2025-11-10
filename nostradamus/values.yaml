@@ -13,7 +13,13 @@ api:
     type: ClusterIP
     # Configures the api port
     port: 8080
-
+  resources: {}
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
 
 ui:
   # This sets the number of ui replicas
@@ -30,6 +36,13 @@ ui:
     type: ClusterIP
     # Configures the ui port
     port: 3000
+  resources: {}
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
 
 scylla:
   nodes:
@@ -57,39 +70,3 @@ metrics:
     interval: 30s
     # Prometheus ServiceMonitor selector
     selector: {}
-
-resources: {}
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
-
-livenessProbe:
-  httpGet:
-    path: /
-    port: http
-readinessProbe:
-  httpGet:
-    path: /
-    port: http
-
-# Additional volumes on the output Deployment definition.
-volumes: []
-# - name: foo
-#   secret:
-#     secretName: mysecret
-#     optional: false
-
-# Additional volumeMounts on the output Deployment definition.
-volumeMounts: []
-# - name: foo
-#   mountPath: "/etc/foo"
-#   readOnly: true
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}

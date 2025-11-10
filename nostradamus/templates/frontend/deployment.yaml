@@ -27,4 +27,8 @@ spec:
           env:
             - name: API_URL
               value: "http://{{- include "nostradamus.fullname" . }}-api:{{ .Values.api.service.port }}"
+          {{- if .Values.ui.resources }}
+          resources:
+          {{- toYaml .Values.ui.resources | nindent 12 }}
+          {{- end }}
   replicas: {{ .Values.ui.replicaCount }}
